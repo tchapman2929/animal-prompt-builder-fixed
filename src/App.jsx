@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 
 const Button = ({ children, ...props }) => (
-  <button className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700" {...props}>
+  <button
+    className="px-4 py-2 rounded-xl bg-blue-600 text-white font-medium hover:bg-blue-700 transition-all duration-200 shadow"
+    {...props}
+  >
     {children}
   </button>
 );
@@ -56,39 +59,41 @@ export default function App() {
   const prompt = `A cinematic 8-second video of a ${values.creature} in a ${values.setting}, during a ${values.time}, ${values.action}. The scene is captured in the style of ${values.style}, with a ${values.camera} and a ${values.tone} tone. The ${values.creature} appears ${values.description}, and there is ${values.background} in the background.`;
 
   return (
-    <div className="p-6 max-w-3xl mx-auto space-y-6">
-      <h1 className="text-2xl font-bold">Animal Vlog Prompt Builder</h1>
+    <div className="min-h-screen bg-gray-100 p-6 flex items-center justify-center">
+      <div className="bg-white shadow-xl rounded-2xl p-8 max-w-4xl w-full space-y-8">
+        <h1 className="text-4xl font-bold text-center text-gray-800">🦍 Animal Vlog Prompt Builder</h1>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {Object.keys(options).map(key => (
-          <div key={key}>
-            <label className="block mb-1 capitalize">{key}</label>
-            <input
-              type="text"
-              className="w-full p-2 rounded border"
-              value={values[key]}
-              onChange={e => handleChange(key, e.target.value)}
-              list={`${key}-options`}
-            />
-            <datalist id={`${key}-options`}>
-              {options[key].map(option => (
-                <option key={option} value={option} />
-              ))}
-            </datalist>
-          </div>
-        ))}
-      </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          {Object.keys(options).map((key) => (
+            <div key={key}>
+              <label className="block text-sm font-medium text-gray-700 capitalize mb-1">{key}</label>
+              <input
+                type="text"
+                className="w-full border border-gray-300 rounded-xl px-3 py-2 shadow-sm focus:ring-2 focus:ring-blue-300 focus:outline-none"
+                value={values[key]}
+                onChange={(e) => handleChange(key, e.target.value)}
+                list={`${key}-options`}
+              />
+              <datalist id={`${key}-options`}>
+                {options[key].map((option) => (
+                  <option key={option} value={option} />
+                ))}
+              </datalist>
+            </div>
+          ))}
+        </div>
 
-      <div>
-        <Button onClick={randomizeAll} className="mt-4 mr-2">🎲 Randomize</Button>
-        <Button onClick={() => navigator.clipboard.writeText(prompt)}>
-          📋 Copy Prompt
-        </Button>
-      </div>
+        <div className="flex flex-wrap gap-4 justify-center">
+          <Button onClick={randomizeAll}>🎲 Randomize</Button>
+          <Button onClick={() => navigator.clipboard.writeText(prompt)}>
+            📋 Copy Prompt
+          </Button>
+        </div>
 
-      <div className="bg-gray-100 p-4 rounded text-gray-800 mt-6">
-        <h2 className="font-semibold mb-2">📜 Generated Prompt:</h2>
-        <p>{prompt}</p>
+        <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 text-gray-800 shadow-inner">
+          <h2 className="font-semibold text-lg mb-2">📜 Generated Prompt:</h2>
+          <p className="whitespace-pre-wrap">{prompt}</p>
+        </div>
       </div>
     </div>
   );
